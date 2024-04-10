@@ -24,7 +24,7 @@ const CLASSNAME = {
   },
 }
 
-export default async function renderPostModal({ postId, submitButtonOptions }) {
+async function renderPostModal({ postId, submitButtonOptions }) {
   const post = postId ? await api.getPost({ id: postId }) : { title: '', content: '' }
   const postDetailForm = {
     title: post.title,
@@ -118,5 +118,34 @@ export default async function renderPostModal({ postId, submitButtonOptions }) {
         [submitButtonOptions.text]
       ),
     ],
+  })
+}
+
+export function renderCreatePostModal() {
+  renderPostModal({
+    submitButtonOptions: {
+      attrs: {
+        className: 'bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
+      },
+      text: '작성',
+      async onclick(postData) {
+        await api.createPost(postData)
+      },
+    },
+  })
+}
+
+export function renderUpdatePostModal({ postId }) {
+  renderPostModal({
+    postId,
+    submitButtonOptions: {
+      attrs: {
+        className: 'bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
+      },
+      text: '수정',
+      async onclick(postData) {
+        await api.updatePost(postData)
+      },
+    },
   })
 }

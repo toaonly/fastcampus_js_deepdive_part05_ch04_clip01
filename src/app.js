@@ -1,7 +1,7 @@
 import api from './api'
 import renderPostsContainer from './postsContainer'
 import renderPage from './page'
-import renderPostModal from './postModal'
+import { renderCreatePostModal, renderUpdatePostModal } from './postModal'
 
 export default async function renderApp(page = 1) {
   const res = await api.getPosts({ page })
@@ -18,31 +18,10 @@ function refresh(posts, pages, first, prev) {
     renderPostsContainer({
       posts,
       onCreatePostClick() {
-        renderPostModal({
-          submitButtonOptions: {
-            attrs: {
-              className: 'bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
-            },
-            text: '작성',
-            async onclick(postData) {
-              await api.createPost(postData)
-            },
-          },
-        })
+        renderCreatePostModal()
       },
       onPostClick(postId) {
-        renderPostModal({
-          postId,
-          submitButtonOptions: {
-            attrs: {
-              className: 'bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
-            },
-            text: '수정',
-            async onclick(postData) {
-              await api.updatePost(postData)
-            },
-          },
-        })
+        renderUpdatePostModal({ postId })
       },
     }),
     renderPage({
