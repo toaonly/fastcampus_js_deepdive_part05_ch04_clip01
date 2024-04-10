@@ -18,10 +18,19 @@ function refresh(posts, pages, first, prev) {
     renderPostsContainer({
       posts,
       onCreatePostClick() {
-        renderCreatePostModal()
+        renderCreatePostModal({
+          async onCreated() {
+            await renderApp(currentPage)
+          },
+        })
       },
       onPostClick(postId) {
-        renderUpdatePostModal({ postId })
+        renderUpdatePostModal({
+          postId,
+          async onUpdated() {
+            await renderApp(currentPage)
+          },
+        })
       },
     }),
     renderPage({

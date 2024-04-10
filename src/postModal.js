@@ -42,7 +42,11 @@ async function renderPostModal({ postId, submitButtonOptions }) {
   }
 
   const modal = createModal({
-    attrs: {},
+    attrs: {
+      dataset: {
+        testId: `post-modal${postId ? '__' + postId : ''}`,
+      },
+    },
     width: 600,
     children: [
       createElement(
@@ -135,16 +139,17 @@ export function renderCreatePostModal() {
   })
 }
 
-export function renderUpdatePostModal({ postId }) {
+export function renderUpdatePostModal({ postId, onUpdated }) {
   renderPostModal({
     postId,
     submitButtonOptions: {
       attrs: {
-        className: 'bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
+        className: 'btn-update bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
       },
       text: '수정',
       async onclick(postData) {
         await api.updatePost(postData)
+        await onUpdated()
       },
     },
   })

@@ -19,6 +19,9 @@ export default function renderPostRow({ post, onPostClick }) {
     'div',
     {
       className: CLASSNAME.LIST_ROW,
+      dataset: {
+        testId: `post-row__${post.id}`,
+      },
       onclick() {
         onPostClick(post.id)
       },
