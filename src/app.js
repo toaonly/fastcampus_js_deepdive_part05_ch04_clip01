@@ -1,7 +1,7 @@
 import api from './api'
-import renderPostsContainer from './posts-container'
+import renderPostsContainer from './postsContainer'
 import renderPage from './page'
-import renderPostModal from './post-modal'
+import renderPostModal from './postModal'
 
 export default async function renderApp(page = 1) {
   const res = await api.getPosts({ page })
@@ -15,10 +15,11 @@ function refresh(posts, pages, first, prev) {
 
   app.innerHTML = ''
   app.append(
-    renderPostsContainer(posts, {
+    renderPostsContainer({
+      posts,
       onCreatePostClick() {
         renderPostModal({
-          submitButton: {
+          submitButtonOptions: {
             attrs: {
               className: 'bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
             },
@@ -32,7 +33,7 @@ function refresh(posts, pages, first, prev) {
       onPostClick(postId) {
         renderPostModal({
           postId,
-          submitButton: {
+          submitButtonOptions: {
             attrs: {
               className: 'bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
             },
@@ -47,7 +48,7 @@ function refresh(posts, pages, first, prev) {
     renderPage({
       pages: pages,
       current: currentPage,
-      async onClickPage(page) {
+      async onPageClick(page) {
         await renderApp(page)
       },
     })

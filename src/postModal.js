@@ -24,8 +24,8 @@ const CLASSNAME = {
   },
 }
 
-export default async function renderPostModal({ postId, submitButton }) {
-  const post = postId ? await api.getPost(postId) : { title: '', content: '' }
+export default async function renderPostModal({ postId, submitButtonOptions }) {
+  const post = postId ? await api.getPost({ id: postId }) : { title: '', content: '' }
   const postDetailForm = {
     title: post.title,
     content: post.content,
@@ -104,18 +104,18 @@ export default async function renderPostModal({ postId, submitButton }) {
       createElement(
         'button',
         {
-          ...submitButton.attrs,
+          ...submitButtonOptions.attrs,
           async onclick() {
             const postData = {
               id: postId,
               ...postDetailForm.toJSON(),
             }
 
-            await submitButton.onclick(postData)
+            await submitButtonOptions.onclick(postData)
             modal.close()
           },
         },
-        [submitButton.text]
+        [submitButtonOptions.text]
       ),
     ],
   })

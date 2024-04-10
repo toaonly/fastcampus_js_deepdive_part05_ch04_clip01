@@ -1,5 +1,5 @@
 import createElement from './createElement'
-import renderPostRow from './post-row'
+import renderPostRow from './postRow'
 
 const CLASSNAME = {
   CONTAINER: 'posts-container',
@@ -20,7 +20,7 @@ const CLASSNAME = {
   },
 }
 
-export default function renderPostsContainer(posts, { onCreatePostClick, onPostClick }) {
+export default function renderPostsContainer({ posts, onCreatePostClick, onPostClick }) {
   return createElement('div', { className: CLASSNAME.CONTAINER }, [
     createElement('div', { className: 'flex justify-end' }, [
       createElement(
@@ -42,7 +42,7 @@ export default function renderPostsContainer(posts, { onCreatePostClick, onPostC
     createElement(
       'div',
       { className: CLASSNAME.LIST },
-      posts.map(post => renderPostRow(post, { onPostClick }))
+      posts.map(post => renderPostRow({ post, onPostClick }))
     ),
   ])
 }

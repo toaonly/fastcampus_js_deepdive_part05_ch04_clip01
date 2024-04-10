@@ -14,7 +14,7 @@ const CLASSNAME = {
   },
 }
 
-export default function renderPostRow(post, { onPostClick }) {
+export default function renderPostRow({ post, onPostClick }) {
   return createElement(
     'div',
     {

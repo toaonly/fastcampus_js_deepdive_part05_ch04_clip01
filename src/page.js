@@ -1,6 +1,6 @@
 import createElement from './createElement'
 
-export default function renderPage({ pages, current, onClickPage }) {
+export default function renderPage({ pages, current, onPageClick }) {
   return createElement(
     'div',
     { className: 'page-container' },
@@ -12,7 +12,7 @@ export default function renderPage({ pages, current, onClickPage }) {
         {
           className: `page-container__page ${isCurrent ? 'active' : ''}`,
           onclick() {
-            onClickPage(i + 1)
+            onPageClick(i + 1)
           },
         },
         [`${i + 1}`]

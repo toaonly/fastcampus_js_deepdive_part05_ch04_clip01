@@ -5,7 +5,7 @@ const api = {
   getPosts({ page } = { page: 1 }) {
     return fetch(`http://localhost:3000/posts?_page=${page}`).then(res => res.json())
   },
-  getPost(id) {
+  getPost({ id }) {
     return fetch(`http://localhost:3000/posts/${id}`).then(res => res.json())
   },
   createPost({ title, content }) {
