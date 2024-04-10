@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply m-0 p-0;
+  @apply text-base;
+  @apply bg-slate-800;
+  @apply text-white;
+
+  &:has(.modal-container) {
+    @apply overflow-hidden;
+  }
+}
+
+input,
+textarea {
+  @apply px-2 py-1;
+  @apply bg-transparent;
+  @apply border border-slate-400 rounded-sm;
+  @apply focus:border-sky-500;
+  @apply outline-none;
+}
+
+#app {
+  @apply flex flex-col gap-8 justify-center;
+  @apply p-16 mx-auto;
+}
+
+.posts-container {
+  &__header,
+  &__list__row {
+    @apply flex gap-4;
+
+    &__id {
+      @apply w-[80px];
+      @apply text-ellipsis overflow-hidden whitespace-nowrap;
+    }
+
+    &__title {
+      @apply flex-1;
+      @apply text-ellipsis overflow-hidden whitespace-nowrap;
+    }
+
+    &__created-at {
+      @apply w-[60px];
+    }
+  }
+
+  &__header {
+    @apply p-4;
+    @apply border-b border-sky-500;
+    @apply font-semibold;
+  }
+
+  &__list {
+    @apply py-4;
+  }
+
+  &__list__row {
+    @apply px-4 py-2;
+    @apply hover:bg-slate-900 hover:cursor-pointer;
+    @apply text-gray-300 hover:text-white;
+  }
+}
+
+.page-container {
+  @apply flex gap-4;
+
+  &__page {
+    @apply w-10 h-10;
+    @apply hover:bg-sky-500 active:bg-sky-400;
+    @apply rounded-sm;
+
+    &.active {
+      @apply bg-sky-500;
+      @apply font-semibold;
+    }
+  }
+}
+
+.modal-container {
+  @apply fixed top-0 left-0 w-screen h-screen overflow-hidden;
+  @apply bg-black/70;
+
+  &__layer {
+    @apply flex justify-center;
+    @apply pt-24;
+    @apply w-full h-full overflow-y-auto;
+
+    &__main {
+      @apply w-fit h-fit;
+      @apply px-9 py-8;
+      @apply bg-slate-700;
+      @apply rounded-lg;
+      @apply box-content;
+
+      &__button-wrapper {
+        @apply flex justify-end gap-2;
+
+        button {
+          @apply text-sm px-4 py-2 rounded-md;
+
+          &.btn-close {
+            @apply bg-gray-600 hover:bg-gray-500 active:bg-gray-700;
+          }
+        }
+      }
+    }
+  }
+}
+
+.post-detail {
+  @apply flex flex-col gap-8;
+
+  &__title,
+  &__content {
+    @apply flex flex-col gap-0.5;
+
+    &__label {
+      @apply text-xs;
+      @apply text-slate-400;
+    }
+  }
+
+  &__title {
+    &__value {
+      @apply text-lg font-semibold;
+    }
+  }
+
+  &__content {
+    &__value {
+      @apply resize-none;
+    }
+  }
+}
