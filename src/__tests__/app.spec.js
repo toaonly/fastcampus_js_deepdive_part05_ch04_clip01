@@ -1,5 +1,6 @@
 import { vi } from 'vitest'
-import api from '../api'
+import dayjs from 'dayjs'
+import { v4 as uuid } from 'uuid'
 import db from '../../db/db.json'
 import renderApp from '../app'
 
@@ -7,7 +8,6 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 describe('app 테스트', () => {
   beforeAll(() => {
-    document.body.innerHTML = '<div id="app"></div>'
     vi.mock('../api.js', () => {
       return {
         default: {
@@ -26,7 +26,11 @@ describe('app 테스트', () => {
             })
           },
           getPost: ({ id }) => Promise.resolve(db.posts.find(p => p.id === id)),
-          createPost: ({ title, content }) => Promise.resolve({ title, content }),
+          createPost({ title, content }) {
+            db.posts.push({ id: uuid(), createdAt: dayjs().format(), title, content })
+
+            return Promise.resolve(db.posts[db.posts.length - 1])
+          },
           updatePost({ id, title, content }) {
             db.posts.some(post => {
               if (post.id === id) {
@@ -44,6 +48,8 @@ describe('app 테스트', () => {
   })
 
   beforeEach(async () => {
+    document.body.innerHTML = '<div id="app"></div>'
+
     await renderApp()
   })
 
@@ -129,6 +135,59 @@ describe('app 테스트', () => {
       const postRow = document.querySelector(`[data-test-id="post-row__${post.id}"]`)
 
       expect(postRow.querySelector('.posts-container__list__row__title').textContent).toBe('제목 변경 테스트 - 3')
+    })
+  })
+
+  describe('게시글 생성 modal 테스트', () => {
+    beforeEach(() => {
+      const btnWrite = document.querySelector(`button.btn-write`)
+
+      btnWrite.click()
+    })
+
+    it('title, content 를 입력하고 작성을 누르면 게시글이 생성된다', async () => {
+      const postModal = document.querySelector(`[data-test-id="post-modal"]`)
+      const postTitle = postModal.querySelector('input')
+      const postContent = postModal.querySelector('textarea')
+
+      postTitle.value = '[제목] 게시글 작성 테스트 - 1'
+      postTitle.dispatchEvent(new InputEvent('input'))
+      postContent.value = '[내용] 게시글 작성 테스트 - 1'
+      postContent.dispatchEvent(new InputEvent('input'))
+
+      await postModal.querySelector('button.btn-create').click()
+
+      expect(db.posts[db.posts.length - 1].title).toBe('[제목] 게시글 작성 테스트 - 1')
+      expect(db.posts[db.posts.length - 1].content).toBe('[내용] 게시글 작성 테스트 - 1')
+    })
+
+    it('게시글 작성 후 작성된 게시글이 목록에 반영되어야 한다', async () => {
+      const postModal = document.querySelector(`[data-test-id="post-modal"]`)
+      const postTitle = postModal.querySelector('input')
+      const postContent = postModal.querySelector('textarea')
+
+      postTitle.value = '[제목] 게시글 작성 테스트 - 2'
+      postTitle.dispatchEvent(new InputEvent('input'))
+      postContent.value = '[내용] 게시글 작성 테스트 - 2'
+      postContent.dispatchEvent(new InputEvent('input'))
+
+      await postModal.querySelector('button.btn-create').click()
+
+      expect(db.posts[db.posts.length - 1].title).toBe('[제목] 게시글 작성 테스트 - 2')
+      expect(db.posts[db.posts.length - 1].content).toBe('[내용] 게시글 작성 테스트 - 2')
+
+      const lastPage = document.querySelector(`.page-container__page:last-child`)
+      const lastPost = db.posts[db.posts.length - 1]
+
+      lastPage.click()
+
+      await wait()
+
+      const lastPostRow = document.querySelector(`[data-test-id="post-row__${lastPost.id}"]`)
+
+      expect(lastPostRow.querySelector('.posts-container__list__row__title').textContent).toBe(
+        '[제목] 게시글 작성 테스트 - 2'
+      )
     })
   })
 })

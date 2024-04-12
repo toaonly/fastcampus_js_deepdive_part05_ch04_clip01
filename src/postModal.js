@@ -129,7 +129,7 @@ export function renderCreatePostModal() {
   renderPostModal({
     submitButtonOptions: {
       attrs: {
-        className: 'bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
+        className: 'btn-create bg-sky-500 hover:bg-sky-400 active:bg-sky-600',
       },
       text: '작성',
       async onclick(postData) {

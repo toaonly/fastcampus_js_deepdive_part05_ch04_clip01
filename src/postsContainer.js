@@ -26,7 +26,7 @@ export default function renderPostsContainer({ posts, onCreatePostClick, onPostC
       createElement(
         'button',
         {
-          className: 'px-4 py-2 bg-sky-500 hover:bg-sky-400 active:bg-sky-600 rounded-sm',
+          className: 'px-4 py-2 bg-sky-500 hover:bg-sky-400 active:bg-sky-600 rounded-sm btn-write',
           onclick() {
             onCreatePostClick()
           },
